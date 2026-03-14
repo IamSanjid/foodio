@@ -27,7 +27,7 @@ export default function AdminSidebar() {
         Foodio<span className="text-[#FFB800]">.</span>
       </Link>
 
-      <nav className="flex-grow space-y-2">
+      <nav className="grow space-y-2">
         {navItems.map((item) => (
           <Link
             key={item.href}

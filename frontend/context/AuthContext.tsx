@@ -1,7 +1,12 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from '@/lib/api';
+import {
+  login as loginRequest,
+  register as registerRequest,
+} from '@/lib/api/auth';
+import { getErrorMessage } from '@/lib/errors';
+import { LoginInput, RegisterInput } from '@/lib/schemas';
 
 interface User {
   id: number;
@@ -12,12 +17,8 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (credentials: { email: string; password: string }) => Promise<void>;
-  register: (userData: {
-    email: string;
-    password: string;
-    name: string;
-  }) => Promise<void>;
+  login: (credentials: LoginInput) => Promise<void>;
+  register: (userData: RegisterInput) => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
@@ -27,32 +28,45 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    if (typeof window !== 'undefined') {
-      const storedUser = localStorage.getItem('user');
-      return storedUser ? JSON.parse(storedUser) : null;
-    }
-    return null;
-  });
-  const [loading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Sync logic if needed
+    try {
+      const storedToken = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+
+      if (storedToken && storedUser) {
+        setUser(JSON.parse(storedUser) as User);
+      } else {
+        setUser(null);
+      }
+    } catch {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const login = async (credentials: { email: string; password: string }) => {
-    const { data } = await api.post('/auth/login', credentials);
-    setUser(data.user);
-    localStorage.setItem('token', data.access_token);
-    localStorage.setItem('user', JSON.stringify(data.user));
+  const login = async (credentials: LoginInput) => {
+    try {
+      const data = await loginRequest(credentials);
+      setUser(data.user);
+      localStorage.setItem('token', data.access_token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+    } catch (error: unknown) {
+      throw new Error(getErrorMessage(error, 'Failed to login'));
+    }
   };
 
-  const register = async (userData: {
-    email: string;
-    password: string;
-    name: string;
-  }) => {
-    await api.post('/auth/register', userData);
+  const register = async (userData: RegisterInput) => {
+    try {
+      await registerRequest(userData);
+    } catch (error: unknown) {
+      throw new Error(getErrorMessage(error, 'Failed to register'));
+    }
   };
 
   const logout = () => {

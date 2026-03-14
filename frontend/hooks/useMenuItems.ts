@@ -1,5 +1,16 @@
 import { useState, useCallback } from 'react';
-import api from '@/lib/api';
+import {
+  createMenuItem,
+  deleteMenuItem,
+  getMenuItems,
+  type MenuItemsQuery,
+  updateMenuItem,
+} from '@/lib/api/menu-items';
+import { getErrorMessage } from '@/lib/errors';
+import {
+  type MenuItemCreateInput,
+  type MenuItemUpdateInput,
+} from '@/lib/schemas';
 import { MenuItem } from '@/types';
 
 export function useMenuItems() {
@@ -8,58 +19,40 @@ export function useMenuItems() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchItems = useCallback(
-    async (params?: {
-      name?: string;
-      categoryId?: number;
-      limit?: number;
-      offset?: number;
-    }) => {
-      setLoading(true);
-      setError(null);
-      try {
-        const query = new URLSearchParams();
-        if (params?.name) query.append('name', params.name);
-        if (params?.categoryId)
-          query.append('categoryId', params.categoryId.toString());
-        if (params?.limit) query.append('limit', params.limit.toString());
-        if (params?.offset) query.append('offset', params.offset.toString());
+  const fetchItems = useCallback(async (params?: MenuItemsQuery) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getMenuItems(params);
+      setItems(data.items);
+      setTotal(data.total);
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, 'Failed to fetch menu items'));
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-        const { data } = await api.get(`/menu-items?${query.toString()}`);
-        setItems(data.items);
-        setTotal(data.total);
-      } catch (err: unknown) {
-        const message =
-          err instanceof Error ? err.message : 'Failed to fetch menu items';
-        setError(message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
-
-  const saveItem = async (data: Partial<MenuItem>, id?: number) => {
+  const saveItem = async (
+    data: Partial<MenuItemCreateInput & MenuItemUpdateInput>,
+    id?: number
+  ) => {
     try {
       if (id) {
-        await api.patch(`/menu-items/${id}`, data);
+        await updateMenuItem(id, data);
       } else {
-        await api.post('/menu-items', data);
+        await createMenuItem(data as MenuItemCreateInput);
       }
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to save menu item';
-      throw new Error(message);
+      throw new Error(getErrorMessage(err, 'Failed to save menu item'));
     }
   };
 
   const deleteItem = async (id: number) => {
     try {
-      await api.delete(`/menu-items/${id}`);
+      await deleteMenuItem(id);
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to delete menu item';
-      throw new Error(message);
+      throw new Error(getErrorMessage(err, 'Failed to delete menu item'));
     }
   };
 

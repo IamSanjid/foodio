@@ -83,7 +83,7 @@ export default function Cart() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      <main className="flex-grow max-w-7xl mx-auto w-full px-6 py-12">
+      <main className="grow max-w-7xl mx-auto w-full px-6 py-12">
         <h1 className="text-4xl font-black mb-10">Your Shopping Cart</h1>
 
         {items.length === 0 ? (
@@ -118,7 +118,7 @@ export default function Cart() {
                         className="object-cover"
                       />
                     </div>
-                    <div className="flex-grow">
+                    <div className="grow">
                       <h3 className="text-lg font-bold mb-1">{item.name}</h3>
                       <p className="text-[#FF5C00] font-bold">
                         ${item.price.toFixed(2)}

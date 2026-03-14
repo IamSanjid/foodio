@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import api from '@/lib/api';
+import { getMenuItems } from '@/lib/api/menu-items';
+import { getOrders } from '@/lib/api/orders';
 import { ShoppingBag, Users, DollarSign, Utensils } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -16,23 +17,23 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       try {
         const [orders, items] = await Promise.all([
-          api.get('/orders'),
-          api.get('/menu-items'),
+          getOrders(),
+          getMenuItems(),
         ]);
 
-        const revenue = orders.data.orders.reduce(
+        const revenue = orders.orders.reduce(
           (acc: number, o: { totalAmount: number }) =>
             acc + Number(o.totalAmount),
           0
         );
 
         setStats({
-          totalOrders: orders.data.total,
+          totalOrders: orders.total,
           totalRevenue: revenue,
           totalCustomers: new Set(
-            orders.data.orders.map((o: { user: { id: number } }) => o.user.id)
+            orders.orders.map((o: { user: { id: number } }) => o.user.id)
           ).size,
-          availableItems: items.data.items.length,
+          availableItems: items.items.length,
         });
       } catch (err) {
         console.error(err);

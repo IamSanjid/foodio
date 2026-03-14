@@ -14,33 +14,17 @@ import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/common/guards/roles.guard';
 import { Roles } from '@/common/decorators/roles.decorator';
 import { UserRole } from '@/common/constants';
-
-import { MenuItem } from '@/entities/menu-item.entity';
+import { CreateMenuItemDto } from '@/modules/menu-items/dto/create-menu-item.dto';
+import { UpdateMenuItemDto } from '@/modules/menu-items/dto/update-menu-item.dto';
+import { QueryMenuItemsDto } from '@/modules/menu-items/dto/query-menu-items.dto';
 
 @Controller('menu-items')
 export class MenuItemsController {
   constructor(private readonly menuItemsService: MenuItemsService) {}
 
   @Get()
-  findAll(
-    @Query('name') name?: string,
-    @Query('categoryId') categoryId?: string,
-    @Query('isAvailable') isAvailable?: string,
-    @Query('limit') limit?: string,
-    @Query('offset') offset?: string,
-  ) {
-    return this.menuItemsService.findAllPaginated({
-      name,
-      categoryId: categoryId ? +categoryId : undefined,
-      isAvailable:
-        isAvailable === 'true'
-          ? true
-          : isAvailable === 'false'
-            ? false
-            : undefined,
-      limit: limit ? +limit : undefined,
-      offset: offset ? +offset : undefined,
-    });
+  findAll(@Query() query: QueryMenuItemsDto) {
+    return this.menuItemsService.findAllPaginated(query);
   }
 
   @Get(':id')
@@ -51,14 +35,14 @@ export class MenuItemsController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  create(@Body() itemData: Partial<MenuItem>) {
+  create(@Body() itemData: CreateMenuItemDto) {
     return this.menuItemsService.create(itemData);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  update(@Param('id') id: string, @Body() itemData: Partial<MenuItem>) {
+  update(@Param('id') id: string, @Body() itemData: UpdateMenuItemDto) {
     return this.menuItemsService.update(+id, itemData);
   }
 

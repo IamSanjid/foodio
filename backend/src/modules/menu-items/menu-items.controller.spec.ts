@@ -35,7 +35,9 @@ describe('MenuItemsController', () => {
 
   describe('findAll', () => {
     it('should call service.findAllPaginated', async () => {
-      await controller.findAll();
+      await controller.findAll(
+        {} as import('@/modules/menu-items/dto/query-menu-items.dto').QueryMenuItemsDto,
+      );
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(service.findAllPaginated).toHaveBeenCalled();
     });

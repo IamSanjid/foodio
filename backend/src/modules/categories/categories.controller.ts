@@ -13,8 +13,8 @@ import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/common/guards/roles.guard';
 import { Roles } from '@/common/decorators/roles.decorator';
 import { UserRole } from '@/common/constants';
-
-import { Category } from '@/entities/category.entity';
+import { CreateCategoryDto } from '@/modules/categories/dto/create-category.dto';
+import { UpdateCategoryDto } from '@/modules/categories/dto/update-category.dto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -33,14 +33,14 @@ export class CategoriesController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  create(@Body() categoryData: Partial<Category>) {
+  create(@Body() categoryData: CreateCategoryDto) {
     return this.categoriesService.create(categoryData);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  update(@Param('id') id: string, @Body() categoryData: Partial<Category>) {
+  update(@Param('id') id: string, @Body() categoryData: UpdateCategoryDto) {
     return this.categoriesService.update(+id, categoryData);
   }
 

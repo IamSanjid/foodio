@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like, FindOptionsWhere } from 'typeorm';
 import { MenuItem } from '@/entities/menu-item.entity';
 import { BaseService } from '@/common/base.service';
+import { CreateMenuItemDto } from '@/modules/menu-items/dto/create-menu-item.dto';
+import { UpdateMenuItemDto } from '@/modules/menu-items/dto/update-menu-item.dto';
 
 @Injectable()
 export class MenuItemsService extends BaseService<MenuItem> {
@@ -27,6 +29,8 @@ export class MenuItemsService extends BaseService<MenuItem> {
       limit = 10,
       offset = 0,
     } = query || {};
+    const safeLimit = Math.max(1, Math.min(limit, 100));
+    const safeOffset = Math.max(0, offset);
 
     const where: FindOptionsWhere<MenuItem> = {};
     if (name) where.name = Like(`%${name}%`);
@@ -36,8 +40,8 @@ export class MenuItemsService extends BaseService<MenuItem> {
     const [items, total] = await this.findAndCount({
       where,
       relations: ['category'],
-      take: limit,
-      skip: offset,
+      take: safeLimit,
+      skip: safeOffset,
     });
 
     return { items, total };
@@ -45,5 +49,26 @@ export class MenuItemsService extends BaseService<MenuItem> {
 
   override findOne(id: number) {
     return super.findOne(id, ['category']);
+  }
+
+  override create(data: CreateMenuItemDto) {
+    const { categoryId, ...rest } = data;
+    return super.create({
+      ...rest,
+      ...(categoryId
+        ? { category: { id: categoryId } as MenuItem['category'] }
+        : {}),
+    });
+  }
+
+  override update(id: number, data: UpdateMenuItemDto) {
+    const { categoryId, ...rest } = data;
+    const updateData: Partial<MenuItem> = { ...rest };
+
+    if (categoryId !== undefined) {
+      updateData.category = { id: categoryId } as MenuItem['category'];
+    }
+
+    return super.update(id, updateData);
   }
 }

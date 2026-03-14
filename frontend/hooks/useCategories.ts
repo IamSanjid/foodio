@@ -1,5 +1,11 @@
 import { useState, useCallback } from 'react';
-import api from '@/lib/api';
+import {
+  createCategory as createCategoryRequest,
+  deleteCategory as deleteCategoryRequest,
+  getCategories,
+  updateCategory as updateCategoryRequest,
+} from '@/lib/api/categories';
+import { getErrorMessage } from '@/lib/errors';
 import { Category } from '@/types';
 
 export function useCategories() {
@@ -11,12 +17,10 @@ export function useCategories() {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await api.get('/categories');
+      const data = await getCategories();
       setCategories(data);
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to fetch categories';
-      setError(message);
+      setError(getErrorMessage(err, 'Failed to fetch categories'));
     } finally {
       setLoading(false);
     }
@@ -24,34 +28,28 @@ export function useCategories() {
 
   const createCategory = async (name: string) => {
     try {
-      await api.post('/categories', { name });
-      fetchCategories();
+      await createCategoryRequest({ name });
+      await fetchCategories();
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to create category';
-      throw new Error(message);
+      throw new Error(getErrorMessage(err, 'Failed to create category'));
     }
   };
 
   const updateCategory = async (id: number, name: string) => {
     try {
-      await api.patch(`/categories/${id}`, { name });
-      fetchCategories();
+      await updateCategoryRequest(id, { name });
+      await fetchCategories();
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to update category';
-      throw new Error(message);
+      throw new Error(getErrorMessage(err, 'Failed to update category'));
     }
   };
 
   const deleteCategory = async (id: number) => {
     try {
-      await api.delete(`/categories/${id}`);
-      fetchCategories();
+      await deleteCategoryRequest(id);
+      await fetchCategories();
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to delete category';
-      throw new Error(message);
+      throw new Error(getErrorMessage(err, 'Failed to delete category'));
     }
   };
 

@@ -29,7 +29,21 @@ A premium, simplified Restaurant Ordering System built with Next.js, NestJS, and
    npm install
    ```
 
-2. **Start the whole application** (Production-ready):
+2. **Monorepo workspace commands** (from root):
+
+   ```bash
+   npm run dev
+   npm run build
+   npm run lint
+   npm run type-check
+   npm run validate
+   npm run test
+   ```
+
+   - `dev` runs both backend and frontend workspaces.
+   - `test` currently targets backend tests.
+
+3. **Start the whole application** (Production-ready):
 
    ```bash
    docker compose up --build
@@ -37,7 +51,7 @@ A premium, simplified Restaurant Ordering System built with Next.js, NestJS, and
 
    - Default ports: Backend: 3000, Frontend: 3001
 
-3. **Start in Development mode** (with hot-reloading):
+4. **Start in Development mode** (with hot-reloading):
 
    ```bash
    docker compose -f docker-compose.dev.yml up --build
@@ -45,6 +59,17 @@ A premium, simplified Restaurant Ordering System built with Next.js, NestJS, and
 
    _This will mount your local files into the containers, so they refresh automatically when you save._
    - Default ports: Backend: 3000, Frontend: 3001
+
+### Docker via npm scripts
+
+You can also use root workspace Docker helpers:
+
+```bash
+npm run docker:dev
+npm run docker:dev:down
+npm run docker:prod
+npm run docker:prod:down
+```
 
 ### Alternative: Manual Setup
 

@@ -1,5 +1,11 @@
 import { useState, useCallback } from 'react';
-import api from '@/lib/api';
+import {
+  createOrder,
+  getMyOrders,
+  getOrders,
+  updateOrderStatus as updateOrderStatusRequest,
+} from '@/lib/api/orders';
+import { getErrorMessage } from '@/lib/errors';
 import { Order, OrderStatus } from '@/types';
 
 export function useOrders() {
@@ -13,15 +19,11 @@ export function useOrders() {
       setLoading(true);
       setError(null);
       try {
-        const { data } = await api.get(
-          `/orders?limit=${params?.limit || 10}&offset=${params?.offset || 0}`
-        );
+        const data = await getOrders(params);
         setOrders(data.orders);
         setTotal(data.total);
       } catch (err: unknown) {
-        const message =
-          err instanceof Error ? err.message : 'Failed to fetch orders';
-        setError(message);
+        setError(getErrorMessage(err, 'Failed to fetch orders'));
       } finally {
         setLoading(false);
       }
@@ -33,12 +35,10 @@ export function useOrders() {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await api.get('/orders/my-orders');
+      const data = await getMyOrders();
       setOrders(data);
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to fetch your orders';
-      setError(message);
+      setError(getErrorMessage(err, 'Failed to fetch your orders'));
     } finally {
       setLoading(false);
     }
@@ -48,22 +48,18 @@ export function useOrders() {
     items: { menuItemId: number; quantity: number }[]
   ) => {
     try {
-      const { data } = await api.post('/orders', { items });
+      const data = await createOrder(items);
       return data;
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to place order';
-      throw new Error(message);
+      throw new Error(getErrorMessage(err, 'Failed to place order'));
     }
   };
 
   const updateOrderStatus = async (id: number, status: OrderStatus) => {
     try {
-      await api.patch(`/orders/${id}/status`, { status });
+      await updateOrderStatusRequest(id, status);
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to update order status';
-      throw new Error(message);
+      throw new Error(getErrorMessage(err, 'Failed to update order status'));
     }
   };
 

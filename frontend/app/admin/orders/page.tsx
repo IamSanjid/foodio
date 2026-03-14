@@ -28,6 +28,10 @@ export default function OrderQueue() {
   };
 
   const statusOptions = Object.values(OrderStatus);
+  const nextStatus = (current: OrderStatus) =>
+    statusOptions[statusOptions.indexOf(current) + 1] as
+      | OrderStatus
+      | undefined;
 
   if (loading)
     return (
@@ -58,24 +62,34 @@ export default function OrderQueue() {
               </div>
 
               <div className="flex flex-wrap items-center gap-4">
-                {statusOptions.map((status) => (
-                  <button
-                    key={status}
-                    onClick={() => handleStatusUpdate(order.id, status)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                      order.status === status
-                        ? 'bg-[#FF5C00] text-white shadow-lg shadow-orange-500/20'
-                        : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
-                    }`}
-                  >
-                    {status}
-                  </button>
-                ))}
+                {statusOptions.map((status) => {
+                  const isCurrent = order.status === status;
+                  const isNext = nextStatus(order.status) === status;
+                  const isDisabled = !isNext;
+                  return (
+                    <button
+                      key={status}
+                      onClick={() =>
+                        !isDisabled && handleStatusUpdate(order.id, status)
+                      }
+                      disabled={isDisabled}
+                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                        isCurrent
+                          ? 'bg-[#FF5C00] text-white shadow-lg shadow-orange-500/20'
+                          : isNext
+                            ? 'bg-gray-50 text-gray-600 hover:bg-orange-50 hover:text-[#FF5C00] cursor-pointer'
+                            : 'bg-gray-50 text-gray-300 cursor-not-allowed'
+                      }`}
+                    >
+                      {status}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-end gap-8">
-              <div className="flex-grow">
+              <div className="grow">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
                   Items Ordered
                 </p>
@@ -95,7 +109,7 @@ export default function OrderQueue() {
                 </div>
               </div>
 
-              <div className="text-right min-w-[200px]">
+              <div className="text-right min-w-50">
                 <p className="text-gray-400 text-sm font-medium mb-1">
                   Total Bill
                 </p>

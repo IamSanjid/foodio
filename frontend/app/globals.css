@@ -17,7 +17,7 @@
 }
 
 body {
-  @apply text-[#1a1a1a] bg-[#f8f9fa];
+  @apply text-dark bg-light;
 }
 
 .glass {

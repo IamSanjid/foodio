@@ -6,9 +6,16 @@
     "frontend"
   ],
   "scripts": {
-    "validate": "npm run validate --workspaces",
-    "lint": "npm run lint --workspaces",
-    "type-check": "npm run type-check --workspaces",
+    "dev": "npm run dev -w backend & npm run dev -w frontend",
+    "build": "npm run build -w backend && npm run build -w frontend",
+    "lint": "npm run lint -w backend && npm run lint -w frontend",
+    "type-check": "npm run type-check -w backend && npm run type-check -w frontend",
+    "validate": "npm run validate -w backend && npm run validate -w frontend",
+    "test": "npm run test -w backend",
+    "docker:dev": "docker compose -f docker-compose.dev.yml up",
+    "docker:dev:down": "docker compose -f docker-compose.dev.yml down",
+    "docker:prod": "docker compose -f docker-compose.yml up -d",
+    "docker:prod:down": "docker compose -f docker-compose.yml down",
     "format": "prettier --write ."
   },
   "devDependencies": {

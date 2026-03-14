@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import api from '@/lib/api';
+import { getMenuItemById } from '@/lib/api/menu-items';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { useCart } from '@/context/CartContext';
@@ -16,16 +16,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-
-interface MenuItem {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  isAvailable: boolean;
-  category: { id: number; name: string };
-}
+import { MenuItem } from '@/types';
 
 export default function ItemDetails() {
   const { id } = useParams();
@@ -38,7 +29,7 @@ export default function ItemDetails() {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const { data } = await api.get(`/menu-items/${id}`);
+        const data = await getMenuItemById(String(id));
         setItem(data);
       } catch (err) {
         console.error(err);
@@ -51,7 +42,10 @@ export default function ItemDetails() {
 
   const handleAddToCart = () => {
     if (!user) {
-      router.push('/login');
+      const goToLogin = window.confirm(
+        'Please log in or sign up to add this item to your cart. Click OK for Login or Cancel for Sign Up.'
+      );
+      router.push(goToLogin ? '/login' : '/register');
       return;
     }
     if (item) {
@@ -64,7 +58,7 @@ export default function ItemDetails() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow max-w-7xl mx-auto w-full px-6 py-12">
+      <main className="grow max-w-7xl mx-auto w-full px-6 py-12">
         <button
           onClick={() => router.back()}
           className="flex items-center gap-2 text-gray-500 hover:text-[#FF5C00] mb-8 font-medium transition-colors"
@@ -77,7 +71,7 @@ export default function ItemDetails() {
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            className="relative rounded-[3rem] overflow-hidden shadow-2xl h-[400px] md:h-[600px]"
+            className="relative rounded-[3rem] overflow-hidden shadow-2xl h-100 md:h-150"
           >
             <Image
               src={

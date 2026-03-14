@@ -15,21 +15,26 @@ export default function Home() {
 
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [availability, setAvailability] = useState<'all' | 'available'>('all');
 
   useEffect(() => {
     fetchCategories();
-    fetchItems();
-  }, [fetchCategories, fetchItems]);
+  }, [fetchCategories]);
 
-  const filteredItems = menuItems.filter((item) => {
-    const matchesSearch = item.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesCategory = selectedCategory
-      ? item.category?.id === selectedCategory
-      : true;
-    return matchesSearch && matchesCategory;
-  });
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      fetchItems({
+        name: search.trim() || undefined,
+        categoryId: selectedCategory ?? undefined,
+        isAvailable: availability === 'available' ? true : undefined,
+        limit: 100,
+      });
+    }, 250);
+
+    return () => clearTimeout(timeoutId);
+  }, [availability, fetchItems, search, selectedCategory]);
+
+  const filteredItems = menuItems;
 
   const loading = catLoading || itemLoading;
 
@@ -37,7 +42,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="flex-grow max-w-7xl mx-auto w-full px-6 py-12">
+      <main className="grow max-w-7xl mx-auto w-full px-6 py-12">
         {/* Hero Section */}
         <section className="mb-16">
           <div className="bg-[#FF5C00]/5 rounded-[3rem] p-12 flex flex-col md:flex-row items-center justify-between gap-12">
@@ -61,7 +66,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="relative w-full max-w-sm md:max-w-md aspect-square bg-gradient-to-tr from-[#FF5C00] to-[#FFB800] rounded-full overflow-hidden shadow-2xl">
+            <div className="relative w-full max-w-sm md:max-w-md aspect-square bg-linear-to-tr from-[#FF5C00] to-[#FFB800] rounded-full overflow-hidden shadow-2xl">
               <Image
                 src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
                 alt="Delicious Food"
@@ -76,9 +81,20 @@ export default function Home() {
         <section className="mb-12">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold">Explore Categories</h2>
-            <div className="flex items-center gap-2 text-[#FF5C00] font-semibold cursor-pointer">
-              <span>View All</span>
+            <div className="flex items-center gap-2 text-[#FF5C00] font-semibold">
               <Filter className="w-4 h-4" />
+              <button
+                onClick={() => setAvailability('all')}
+                className={`px-4 py-2 rounded-xl text-sm ${availability === 'all' ? 'bg-[#FF5C00] text-white' : 'bg-white text-gray-600'}`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setAvailability('available')}
+                className={`px-4 py-2 rounded-xl text-sm ${availability === 'available' ? 'bg-[#FF5C00] text-white' : 'bg-white text-gray-600'}`}
+              >
+                Available Only
+              </button>
             </div>
           </div>
           <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
@@ -108,7 +124,7 @@ export default function Home() {
               <p className="text-gray-500">Loading delicious food...</p>
             </div>
           ) : filteredItems.length > 0 ? (
-            selectedCategory || search ? (
+            selectedCategory || search || availability !== 'all' ? (
               <div>
                 <h2 className="text-3xl font-bold mb-8">
                   {selectedCategory
@@ -152,6 +168,7 @@ export default function Home() {
                 onClick={() => {
                   setSearch('');
                   setSelectedCategory(null);
+                  setAvailability('all');
                 }}
                 className="mt-4 text-[#FF5C00] font-bold"
               >

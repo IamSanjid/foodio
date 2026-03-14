@@ -115,10 +115,12 @@ export default function MenuManagement() {
 
   const handleSaveItem = async (e: React.FormEvent) => {
     e.preventDefault();
+    const { categoryId: rawCategoryId, price: rawPrice, ...rest } = formData;
+    const categoryId = rawCategoryId ? parseInt(rawCategoryId, 10) : undefined;
     const payload = {
-      ...formData,
-      price: parseFloat(formData.price),
-      categoryId: parseInt(formData.categoryId),
+      ...rest,
+      price: parseFloat(rawPrice),
+      ...(categoryId !== undefined ? { categoryId } : {}),
     };
 
     try {
@@ -203,7 +205,7 @@ export default function MenuManagement() {
                 <div className="flex gap-2 w-full">
                   <input
                     type="text"
-                    className="px-4 py-2 bg-white rounded-xl flex-grow"
+                    className="px-4 py-2 bg-white rounded-xl grow"
                     autoFocus
                     value={editingCategoryName}
                     onChange={(e) => setEditingCategoryName(e.target.value)}
