@@ -32,26 +32,31 @@ A premium, simplified Restaurant Ordering System built with Next.js, NestJS, and
 2. **Start the whole application** (Production-ready):
 
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
 
+   - Default ports: Backend: 3000, Frontend: 3001
+
 3. **Start in Development mode** (with hot-reloading):
+
    ```bash
-   docker-compose -f docker-compose.dev.yml up --build
+   docker compose -f docker-compose.dev.yml up --build
    ```
+
    _This will mount your local files into the containers, so they refresh automatically when you save._
+   - Default ports: Backend: 3000, Frontend: 3001
 
 ### Alternative: Manual Setup
 
 If you prefer to run services manually:
 
-1. **Start the database**: `docker-compose up -d db`
+1. **Start the database**: `docker compose up -d db`
    _This will build and start the database. If you want to start the database manually, run a PostgreSQL instance and make sure it has a database named `foodio` or the database name set through `.env` file._
 2. **Backend**:
    - `cd backend`
    - `npm run start:dev` / `npm run start:prod`
      - _Note: The database will be seeded automatically on the first run if empty._
-     - For development build `copy .env.example .env`
+     - For development build `copy .env.example .env` (Windows) or `cp .env.example .env` (Linux/Mac)
      - _Note: For production build `.env` file will be ignored._
    ```env
    DB_HOST=localhost # PostgreSQL database instance host
@@ -68,6 +73,13 @@ If you prefer to run services manually:
    ```
 3. **Frontend**:
    - `cd frontend`
+   - For development build `copy .env.example .env` (Windows) or `cp .env.example .env` (Linux/Mac)
+
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:3000 # Backend API URL
+   PORT=3001 # Frontend port
+   ```
+
    - `npm run dev`
 
 ## Default Credentials

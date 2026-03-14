@@ -20,17 +20,17 @@ export default function AdminDashboard() {
           api.get('/menu-items'),
         ]);
 
-        const revenue = orders.data.reduce(
+        const revenue = orders.data.orders.reduce(
           (acc: number, o: { totalAmount: number }) =>
             acc + Number(o.totalAmount),
           0
         );
 
         setStats({
-          totalOrders: orders.data.length,
+          totalOrders: orders.data.total,
           totalRevenue: revenue,
           totalCustomers: new Set(
-            orders.data.map((o: { user: { id: number } }) => o.user.id)
+            orders.data.orders.map((o: { user: { id: number } }) => o.user.id)
           ).size,
           availableItems: items.data.items.length,
         });
