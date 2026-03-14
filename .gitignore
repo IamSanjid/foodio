@@ -64,3 +64,6 @@ next-env.d.ts
 
 # Prisma
 dev.db*
+
+frontend/package-lock.json
+backend/package-lock.json

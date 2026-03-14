@@ -1,6 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ff5c00;
+  --color-secondary: #ffb800;
+  --color-dark: #1a1a1a;
+  --color-light: #f8f9fa;
+  --color-gray: #6c757d;
+}
 
 :root {
   --primary: #ff5c00;
@@ -11,18 +17,15 @@
 }
 
 body {
-  color: var(--dark);
-  background: var(--light);
+  @apply text-[#1a1a1a] bg-[#f8f9fa];
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  @apply bg-white/70 backdrop-blur-md border border-white/20;
 }
 
 .premium-shadow {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  @apply shadow-[0_10px_30px_rgba(0,0,0,0.05)];
 }
 
 .btn-primary {
@@ -32,3 +35,4 @@ body {
 .btn-outline {
   @apply border-2 border-[#FF5C00] text-[#FF5C00] px-6 py-2 rounded-full font-semibold hover:bg-[#FF5C00] hover:text-white transition-all;
 }
+
