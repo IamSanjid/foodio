@@ -6,7 +6,11 @@ import { useEffect } from 'react';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import { Loader2 } from 'lucide-react';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { user, loading } = useAuth();
   const router = useRouter();
 
@@ -27,9 +31,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex min-h-screen bg-gray-50">
       <AdminSidebar />
-      <main className="flex-grow p-10 overflow-auto">
-        {children}
-      </main>
+      <main className="flex-grow p-10 overflow-auto">{children}</main>
     </div>
   );
 }

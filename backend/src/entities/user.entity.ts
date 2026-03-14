@@ -6,12 +6,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserRole } from '@/common/constants';
 import { Order } from './order.entity';
-
-export enum UserRole {
-  USER = 'user',
-  ADMIN = 'admin',
-}
 
 @Entity('users')
 export class User {

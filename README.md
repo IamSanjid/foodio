@@ -19,10 +19,12 @@ A premium, simplified Restaurant Ordering System built with Next.js, NestJS, and
 ## Setup Instructions
 
 ### Prerequisites
+
 - Node.js (v18+)
 - PostgreSQL database
 
 ### Backend Setup
+
 1. Navigate to the `backend` directory: `cd backend`
 2. Install dependencies: `npm install`
 3. Create a `.env` file based on the provided `./backend/.env.example` file:
@@ -35,9 +37,10 @@ A premium, simplified Restaurant Ordering System built with Next.js, NestJS, and
    JWT_SECRET=supersecret
    ```
 4. Start the server: `npm run start:dev`
-   - *Note: The database will be seeded automatically on the first run if empty.*
+   - _Note: The database will be seeded automatically on the first run if empty._
 
 ### Frontend Setup
+
 1. Navigate to the `frontend` directory: `cd frontend`
 2. Install dependencies: `npm install`
 3. Create a `.env.local` file:
@@ -47,5 +50,6 @@ A premium, simplified Restaurant Ordering System built with Next.js, NestJS, and
 4. Start the development server: `npm run dev`
 
 ## Default Credentials
+
 - **Admin**: `admin@foodio.com` / `admin123`
 - **User**: `user@foodio.com` / `user123`

@@ -1,9 +1,11 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User, UserRole } from '../../entities/user.entity';
-import { Category } from '../../entities/category.entity';
-import { MenuItem } from '../../entities/menu-item.entity';
+import { User } from '@/entities/user.entity';
+import { UserRole } from '@/common/constants';
+
+import { Category } from '@/entities/category.entity';
+import { MenuItem } from '@/entities/menu-item.entity';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()

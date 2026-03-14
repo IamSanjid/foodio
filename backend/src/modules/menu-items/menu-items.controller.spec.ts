@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MenuItemsController } from './menu-items.controller';
-import { MenuItemsService } from './menu-items.service';
+import { MenuItemsController } from '@/modules/menu-items/menu-items.controller';
+import { MenuItemsService } from '@/modules/menu-items/menu-items.service';
 
 describe('MenuItemsController', () => {
   let controller: MenuItemsController;
@@ -13,7 +13,9 @@ describe('MenuItemsController', () => {
         {
           provide: MenuItemsService,
           useValue: {
-            findAll: jest.fn().mockResolvedValue({ items: [], total: 0 }),
+            findAllPaginated: jest
+              .fn()
+              .mockResolvedValue({ items: [], total: 0 }),
             findOne: jest.fn(),
             create: jest.fn(),
             update: jest.fn(),
@@ -32,10 +34,10 @@ describe('MenuItemsController', () => {
   });
 
   describe('findAll', () => {
-    it('should call service.findAll', async () => {
+    it('should call service.findAllPaginated', async () => {
       await controller.findAll();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(service.findAll).toHaveBeenCalled();
+      expect(service.findAllPaginated).toHaveBeenCalled();
     });
   });
 });

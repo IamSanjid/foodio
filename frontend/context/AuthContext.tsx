@@ -13,14 +13,20 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (credentials: { email: string; password: string }) => Promise<void>;
-  register: (userData: { email: string; password: string; name: string }) => Promise<void>;
+  register: (userData: {
+    email: string;
+    password: string;
+    name: string;
+  }) => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(() => {
     if (typeof window !== 'undefined') {
       const storedUser = localStorage.getItem('user');
@@ -41,7 +47,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('user', JSON.stringify(data.user));
   };
 
-  const register = async (userData: { email: string; password: string; name: string }) => {
+  const register = async (userData: {
+    email: string;
+    password: string;
+    name: string;
+  }) => {
     await api.post('/auth/register', userData);
   };
 

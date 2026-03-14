@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { OrdersService } from './orders.service';
+import { OrdersService } from '@/modules/orders/orders.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Order, OrderStatus } from '../../entities/order.entity';
-import { MenuItem } from '../../entities/menu-item.entity';
-import { User } from '../../entities/user.entity';
+import { Order } from '@/entities/order.entity';
+import { OrderStatus } from '@/common/constants';
+
+import { MenuItem } from '@/entities/menu-item.entity';
+import { User } from '@/entities/user.entity';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
 
 describe('OrdersService', () => {

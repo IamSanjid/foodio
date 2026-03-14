@@ -33,7 +33,10 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-[#FF5C00]/5 p-6">
       <div className="w-full max-w-md bg-white rounded-[3rem] p-10 premium-shadow">
         <div className="text-center mb-10">
-          <Link href="/" className="text-3xl font-black text-[#FF5C00] mb-4 block">
+          <Link
+            href="/"
+            className="text-3xl font-black text-[#FF5C00] mb-4 block"
+          >
             Foodio<span className="text-[#FFB800]">.</span>
           </Link>
           <h2 className="text-2xl font-bold">Welcome Back!</h2>
@@ -48,10 +51,12 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="text-sm font-bold text-gray-700 ml-2 mb-2 block">Email Address</label>
+            <label className="text-sm font-bold text-gray-700 ml-2 mb-2 block">
+              Email Address
+            </label>
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input 
+              <input
                 type="email"
                 required
                 className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl border-none focus:ring-2 focus:ring-[#FF5C00] transition-all"
@@ -63,10 +68,12 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="text-sm font-bold text-gray-700 ml-2 mb-2 block">Password</label>
+            <label className="text-sm font-bold text-gray-700 ml-2 mb-2 block">
+              Password
+            </label>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input 
+              <input
                 type="password"
                 required
                 className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl border-none focus:ring-2 focus:ring-[#FF5C00] transition-all"
@@ -77,7 +84,7 @@ export default function Login() {
             </div>
           </div>
 
-          <button 
+          <button
             type="submit"
             disabled={loading}
             className="w-full bg-[#FF5C00] text-white py-4 rounded-2xl font-black text-lg hover:bg-[#E05200] transition-all shadow-lg flex items-center justify-center gap-3 disabled:bg-gray-300"
@@ -87,7 +94,10 @@ export default function Login() {
         </form>
 
         <p className="mt-8 text-center text-gray-500">
-          Don&apos;t have an account? <Link href="/register" className="text-[#FF5C00] font-bold">Sign Up</Link>
+          Don&apos;t have an account?{' '}
+          <Link href="/register" className="text-[#FF5C00] font-bold">
+            Sign Up
+          </Link>
         </p>
       </div>
     </div>

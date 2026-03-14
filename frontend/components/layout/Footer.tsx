@@ -11,23 +11,48 @@ export default function Footer() {
             Foodio<span className="text-[#FFB800]">.</span>
           </Link>
           <p className="mt-4 text-gray-600 max-w-sm">
-            The quickest way to get your favorite meals delivered straight to your door. Fresh ingredients, professional chefs, and fast delivery.
+            The quickest way to get your favorite meals delivered straight to
+            your door. Fresh ingredients, professional chefs, and fast delivery.
           </p>
         </div>
         <div>
           <h4 className="font-bold text-lg mb-4">Quick Links</h4>
           <ul className="space-y-2 text-gray-600">
-            <li><Link href="/" className="hover:text-[#FF5C00]">Home</Link></li>
-            <li><Link href="/menu" className="hover:text-[#FF5C00]">Menu</Link></li>
-            <li><Link href="/orders" className="hover:text-[#FF5C00]">Track Order</Link></li>
+            <li>
+              <Link href="/" className="hover:text-[#FF5C00]">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/menu" className="hover:text-[#FF5C00]">
+                Menu
+              </Link>
+            </li>
+            <li>
+              <Link href="/orders" className="hover:text-[#FF5C00]">
+                Track Order
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
           <h4 className="font-bold text-lg mb-4">Support</h4>
           <ul className="space-y-2 text-gray-600">
-            <li><Link href="/help" className="hover:text-[#FF5C00]">Help Center</Link></li>
-            <li><Link href="/contact" className="hover:text-[#FF5C00]">Contact Us</Link></li>
-            <li><Link href="/privacy" className="hover:text-[#FF5C00]">Privacy Policy</Link></li>
+            <li>
+              <Link href="/help" className="hover:text-[#FF5C00]">
+                Help Center
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:text-[#FF5C00]">
+                Contact Us
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy" className="hover:text-[#FF5C00]">
+                Privacy Policy
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

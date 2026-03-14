@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MenuItemsService } from './menu-items.service';
+import { MenuItemsService } from '@/modules/menu-items/menu-items.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { MenuItem } from '../../entities/menu-item.entity';
+import { MenuItem } from '@/entities/menu-item.entity';
 
 describe('MenuItemsService', () => {
   let service: MenuItemsService;
@@ -37,9 +37,9 @@ describe('MenuItemsService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('findAll', () => {
+  describe('findAllPaginated', () => {
     it('should return items and total', async () => {
-      const result = await service.findAll();
+      const result = await service.findAllPaginated();
       expect(result.items).toEqual([mockItem]);
       expect(result.total).toBe(1);
     });

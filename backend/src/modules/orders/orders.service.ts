@@ -5,10 +5,12 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Order, OrderStatus } from '../../entities/order.entity';
-import { OrderItem } from '../../entities/order-item.entity';
-import { MenuItem } from '../../entities/menu-item.entity';
-import { User } from '../../entities/user.entity';
+import { OrderStatus } from '@/common/constants';
+import { Order } from '@/entities/order.entity';
+
+import { OrderItem } from '@/entities/order-item.entity';
+import { MenuItem } from '@/entities/menu-item.entity';
+import { User } from '@/entities/user.entity';
 
 @Injectable()
 export class OrdersService {

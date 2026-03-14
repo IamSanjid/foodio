@@ -1,3 +1,15 @@
+export enum UserRole {
+  USER = 'user',
+  ADMIN = 'admin',
+}
+
+export enum OrderStatus {
+  PENDING = 'Pending',
+  PREPARING = 'Preparing',
+  READY = 'Ready',
+  COMPLETED = 'Completed',
+}
+
 export interface Category {
   id: number;
   name: string;
@@ -24,12 +36,12 @@ export interface User {
   id: number;
   email: string;
   name: string;
-  role: string;
+  role: UserRole;
 }
 
 export interface Order {
   id: number;
-  status: string;
+  status: OrderStatus;
   totalAmount: number;
   createdAt: string;
   user: User;

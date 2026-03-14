@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { AuthProvider } from "@/context/AuthContext";
-import { CartProvider } from "@/context/CartContext";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { AuthProvider } from '@/context/AuthContext';
+import { CartProvider } from '@/context/CartContext';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Foodio | Restaurant Ordering System",
-  description: "Browse menu, add to cart, and place orders with ease.",
+  title: 'Foodio | Restaurant Ordering System',
+  description: 'Browse menu, add to cart, and place orders with ease.',
 };
 
 export default function RootLayout({
@@ -20,9 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <CartProvider>
-            {children}
-          </CartProvider>
+          <CartProvider>{children}</CartProvider>
         </AuthProvider>
       </body>
     </html>

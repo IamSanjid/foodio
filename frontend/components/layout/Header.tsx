@@ -20,16 +20,30 @@ export default function Header() {
       </Link>
 
       <nav className="hidden md:flex items-center gap-8 font-medium">
-        <Link href="/" className="hover:text-[#FF5C00] transition-colors">Home</Link>
-        <Link href="/about" className="hover:text-[#FF5C00] transition-colors">About</Link>
-        <Link href="/contact" className="hover:text-[#FF5C00] transition-colors">Contact</Link>
+        <Link href="/" className="hover:text-[#FF5C00] transition-colors">
+          Home
+        </Link>
+        <Link href="/about" className="hover:text-[#FF5C00] transition-colors">
+          About
+        </Link>
+        <Link
+          href="/contact"
+          className="hover:text-[#FF5C00] transition-colors"
+        >
+          Contact
+        </Link>
         {user?.role === 'admin' && (
-          <Link href="/admin" className="text-[#FF5C00] font-bold">Admin Panel</Link>
+          <Link href="/admin" className="text-[#FF5C00] font-bold">
+            Admin Panel
+          </Link>
         )}
       </nav>
 
       <div className="flex items-center gap-4">
-        <Link href="/cart" className="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
+        <Link
+          href="/cart"
+          className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
+        >
           <ShoppingCart className="w-6 h-6" />
           {cartCount > 0 && (
             <span className="absolute -top-1 -right-1 bg-[#FF5C00] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">
@@ -40,11 +54,17 @@ export default function Header() {
 
         {user ? (
           <div className="flex items-center gap-4">
-            <Link href="/orders" className="flex items-center gap-2 hover:text-[#FF5C00]">
+            <Link
+              href="/orders"
+              className="flex items-center gap-2 hover:text-[#FF5C00]"
+            >
               <User className="w-5 h-5" />
               <span className="hidden md:block font-medium">{user.name}</span>
             </Link>
-            <button onClick={logout} className="p-2 text-gray-500 hover:text-red-500">
+            <button
+              onClick={logout}
+              className="p-2 text-gray-500 hover:text-red-500"
+            >
               <LogOut className="w-5 h-5" />
             </button>
           </div>
@@ -54,7 +74,10 @@ export default function Header() {
           </Link>
         )}
 
-        <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <button
+          className="md:hidden p-2"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
           <Menu className="w-6 h-6" />
         </button>
       </div>

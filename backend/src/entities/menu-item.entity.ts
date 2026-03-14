@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Category } from './category.entity';
+import { Category } from '@/entities/category.entity';
 
 @Entity('menu_items')
 export class MenuItem {

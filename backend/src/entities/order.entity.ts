@@ -7,15 +7,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './user.entity';
-import { OrderItem } from './order-item.entity';
-
-export enum OrderStatus {
-  PENDING = 'Pending',
-  PREPARING = 'Preparing',
-  READY = 'Ready',
-  COMPLETED = 'Completed',
-}
+import { OrderStatus } from '@/common/constants';
+import { User } from '@/entities/user.entity';
+import { OrderItem } from '@/entities/order-item.entity';
 
 @Entity('orders')
 export class Order {

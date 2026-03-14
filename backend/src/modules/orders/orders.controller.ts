@@ -9,12 +9,12 @@ import {
   Request,
   Query,
 } from '@nestjs/common';
-import { OrdersService } from './orders.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../../common/guards/roles.guard';
-import { Roles } from '../../common/decorators/roles.decorator';
-import { User, UserRole } from '../../entities/user.entity';
-import { OrderStatus } from '../../entities/order.entity';
+import { OrdersService } from '@/modules/orders/orders.service';
+import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@/common/guards/roles.guard';
+import { Roles } from '@/common/decorators/roles.decorator';
+import { UserRole, OrderStatus } from '@/common/constants';
+import { User } from '@/entities/user.entity';
 
 @Controller('orders')
 export class OrdersController {

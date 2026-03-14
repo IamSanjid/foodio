@@ -8,6 +8,10 @@
   "scripts": {
     "validate": "npm run validate --workspaces",
     "lint": "npm run lint --workspaces",
-    "type-check": "npm run type-check --workspaces"
+    "type-check": "npm run type-check --workspaces",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
   }
 }

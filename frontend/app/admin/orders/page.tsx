@@ -1,47 +1,38 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import api from '@/lib/api';
-import { Order } from '@/types';
+import { useState, useEffect } from 'react';
+import { useOrders } from '@/hooks/useOrders';
+import { OrderStatus } from '@/types';
 import { Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Pagination from '@/components/shared/Pagination';
 
 export default function OrderQueue() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { orders, total, loading, fetchOrders, updateOrderStatus } =
+    useOrders();
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [total, setTotal] = useState(0);
   const limit = 5;
 
-  const fetchOrders = useCallback(async () => {
-    setLoading(true);
-    try {
-      const { data } = await api.get(`/orders?limit=${limit}&offset=${(currentPage - 1) * limit}`);
-      setOrders(data.orders);
-      setTotal(data.total);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [currentPage, limit]);
-
   useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
+    fetchOrders({ limit, offset: (currentPage - 1) * limit });
+  }, [fetchOrders, currentPage]);
 
-  const handleStatusUpdate = async (id: number, status: string) => {
+  const handleStatusUpdate = async (id: number, status: OrderStatus) => {
     try {
-      await api.patch(`/orders/${id}/status`, { status });
-      fetchOrders();
-    } catch (err) {
-      console.error(err);
+      await updateOrderStatus(id, status);
+      fetchOrders({ limit, offset: (currentPage - 1) * limit });
+    } catch {
+      alert('Failed to update status');
     }
   };
 
-  const statusOptions = ['Pending', 'Preparing', 'Ready', 'Completed'];
+  const statusOptions = Object.values(OrderStatus);
 
-  if (loading) return <Loader2 className="w-10 h-10 animate-spin text-[#FF5C00] mx-auto mt-20" />;
+  if (loading)
+    return (
+      <Loader2 className="w-10 h-10 animate-spin text-[#FF5C00] mx-auto mt-20" />
+    );
 
   return (
     <div>
@@ -49,7 +40,7 @@ export default function OrderQueue() {
 
       <div className="grid grid-cols-1 gap-6">
         {orders.map((order) => (
-          <motion.div 
+          <motion.div
             key={order.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -68,13 +59,13 @@ export default function OrderQueue() {
 
               <div className="flex flex-wrap items-center gap-4">
                 {statusOptions.map((status) => (
-                  <button 
+                  <button
                     key={status}
                     onClick={() => handleStatusUpdate(order.id, status)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                      order.status === status 
-                      ? 'bg-[#FF5C00] text-white shadow-lg shadow-orange-500/20' 
-                      : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
+                      order.status === status
+                        ? 'bg-[#FF5C00] text-white shadow-lg shadow-orange-500/20'
+                        : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
                     }`}
                   >
                     {status}
@@ -85,22 +76,35 @@ export default function OrderQueue() {
 
             <div className="flex flex-col md:flex-row justify-between items-end gap-8">
               <div className="flex-grow">
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Items Ordered</p>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+                  Items Ordered
+                </p>
                 <div className="flex flex-wrap gap-3">
-                  {order.items.map((item: { id: number; quantity: number; menuItem: { name: string }; priceAtTime: number }) => (
-                    <div key={item.id} className="bg-gray-50 px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2">
-                       <span className="text-[#FF5C00] font-bold">{item.quantity}x</span>
-                       <span>{item.menuItem?.name || 'Item Removed'}</span>
-                       <span className="text-gray-400">${item.priceAtTime}</span>
+                  {order.items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="bg-gray-50 px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2"
+                    >
+                      <span className="text-[#FF5C00] font-bold">
+                        {item.quantity}x
+                      </span>
+                      <span>{item.menuItem?.name || 'Item Removed'}</span>
+                      <span className="text-gray-400">${item.priceAtTime}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div className="text-right min-w-[200px]">
-                <p className="text-gray-400 text-sm font-medium mb-1">Total Bill</p>
-                <p className="text-3xl font-black text-[#FF5C00]">${Number(order.totalAmount).toFixed(2)}</p>
-                <p className="text-gray-400 text-xs mt-2">{new Date(order.createdAt).toLocaleString()}</p>
+                <p className="text-gray-400 text-sm font-medium mb-1">
+                  Total Bill
+                </p>
+                <p className="text-3xl font-black text-[#FF5C00]">
+                  ${Number(order.totalAmount).toFixed(2)}
+                </p>
+                <p className="text-gray-400 text-xs mt-2">
+                  {new Date(order.createdAt).toLocaleString()}
+                </p>
               </div>
             </div>
           </motion.div>
@@ -112,25 +116,12 @@ export default function OrderQueue() {
           </div>
         )}
 
-        {total > limit && (
-          <div className="flex justify-center items-center gap-4 mt-8">
-            <button 
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(prev => prev - 1)}
-              className="px-6 py-3 bg-white rounded-2xl font-bold premium-shadow disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <span className="font-bold text-gray-500">Page {currentPage} of {Math.ceil(total / limit)}</span>
-            <button 
-              disabled={currentPage >= Math.ceil(total / limit)}
-              onClick={() => setCurrentPage(prev => prev + 1)}
-              className="px-6 py-3 bg-white rounded-2xl font-bold premium-shadow disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-        )}
+        <Pagination
+          currentPage={currentPage}
+          total={total}
+          limit={limit}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </div>
   );

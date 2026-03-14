@@ -9,12 +9,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { MenuItemsService } from './menu-items.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../../common/guards/roles.guard';
-import { Roles } from '../../common/decorators/roles.decorator';
-import { MenuItem } from '../../entities/menu-item.entity';
-import { UserRole } from '../../entities/user.entity';
+import { MenuItemsService } from '@/modules/menu-items/menu-items.service';
+import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@/common/guards/roles.guard';
+import { Roles } from '@/common/decorators/roles.decorator';
+import { UserRole } from '@/common/constants';
+
+import { MenuItem } from '@/entities/menu-item.entity';
 
 @Controller('menu-items')
 export class MenuItemsController {
@@ -28,7 +29,7 @@ export class MenuItemsController {
     @Query('limit') limit?: string,
     @Query('offset') offset?: string,
   ) {
-    return this.menuItemsService.findAll({
+    return this.menuItemsService.findAllPaginated({
       name,
       categoryId: categoryId ? +categoryId : undefined,
       isAvailable:

@@ -1,16 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like, FindOptionsWhere } from 'typeorm';
-import { MenuItem } from '../../entities/menu-item.entity';
+import { MenuItem } from '@/entities/menu-item.entity';
+import { BaseService } from '@/common/base.service';
 
 @Injectable()
-export class MenuItemsService {
+export class MenuItemsService extends BaseService<MenuItem> {
   constructor(
     @InjectRepository(MenuItem)
     private menuItemRepository: Repository<MenuItem>,
-  ) {}
+  ) {
+    super(menuItemRepository);
+  }
 
-  async findAll(query?: {
+  async findAllPaginated(query?: {
     name?: string;
     categoryId?: number;
     isAvailable?: boolean;
@@ -30,7 +33,7 @@ export class MenuItemsService {
     if (categoryId) where.category = { id: categoryId };
     if (isAvailable !== undefined) where.isAvailable = isAvailable === true;
 
-    const [items, total] = await this.menuItemRepository.findAndCount({
+    const [items, total] = await this.findAndCount({
       where,
       relations: ['category'],
       take: limit,
@@ -40,30 +43,7 @@ export class MenuItemsService {
     return { items, total };
   }
 
-  async findOne(id: number) {
-    const item = await this.menuItemRepository.findOne({
-      where: { id },
-      relations: ['category'],
-    });
-    if (!item) {
-      throw new NotFoundException(`Menu Item #${id} not found`);
-    }
-    return item;
-  }
-
-  create(itemData: Partial<MenuItem>) {
-    const item = this.menuItemRepository.create(itemData);
-    return this.menuItemRepository.save(item);
-  }
-
-  async update(id: number, itemData: Partial<MenuItem>) {
-    const item = await this.findOne(id);
-    Object.assign(item, itemData);
-    return this.menuItemRepository.save(item);
-  }
-
-  async remove(id: number) {
-    const item = await this.findOne(id);
-    return this.menuItemRepository.remove(item);
+  override findOne(id: number) {
+    return super.findOne(id, ['category']);
   }
 }

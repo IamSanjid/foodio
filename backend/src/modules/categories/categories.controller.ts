@@ -8,12 +8,13 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../../common/guards/roles.guard';
-import { Roles } from '../../common/decorators/roles.decorator';
-import { Category } from '../../entities/category.entity';
-import { UserRole } from '../../entities/user.entity';
+import { CategoriesService } from '@/modules/categories/categories.service';
+import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@/common/guards/roles.guard';
+import { Roles } from '@/common/decorators/roles.decorator';
+import { UserRole } from '@/common/constants';
+
+import { Category } from '@/entities/category.entity';
 
 @Controller('categories')
 export class CategoriesController {
