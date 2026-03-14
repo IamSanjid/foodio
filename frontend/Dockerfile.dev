@@ -1,0 +1,18 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy lockfiles
+COPY package*.json ./
+COPY frontend/package*.json ./frontend/
+
+# Install ALL dependencies
+RUN npm install
+
+# Copy source
+COPY frontend/ ./frontend/
+
+EXPOSE 3001
+
+# Run in dev mode
+CMD ["npm", "run", "dev", "-w", "frontend"]

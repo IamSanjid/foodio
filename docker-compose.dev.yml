@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: foodio-db-dev
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: foodio
+    ports:
+      - '5432:5432'
+    volumes:
+      - foodio-db-dev-data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile.dev
+    container_name: foodio-backend-dev
+    ports:
+      - '3000:3000'
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: foodio
+      DB_SYNCHRONIZE: 'true'
+      JWT_SECRET: supersecret-development
+      ADMIN_EMAIL: admin@foodio.com
+      ADMIN_PASSWORD: admin123
+      SEED_INITIAL_DATA: 'true'
+      PORT: 3000
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/backend/node_modules
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile.dev
+    container_name: foodio-frontend-dev
+    ports:
+      - '3001:3001'
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3000
+      PORT: 3001
+      WATCHPACK_POLLING: 'true' # Helpful for Docker on Windows
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/frontend/node_modules
+      - /app/frontend/.next
+    depends_on:
+      - backend
+
+volumes:
+  foodio-db-dev-data:

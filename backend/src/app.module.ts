@@ -19,6 +19,7 @@ import { SeederModule } from '@/modules/seeder/seeder.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: process.env.NODE_ENV === 'development' ? '.env' : undefined,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -31,7 +32,7 @@ import { SeederModule } from '@/modules/seeder/seeder.module';
         password: configService.get<string>('DB_PASSWORD', 'postgres'),
         database: configService.get<string>('DB_NAME', 'foodio'),
         entities: [User, Category, MenuItem, Order, OrderItem],
-        synchronize: true, // Only for development
+        synchronize: configService.get<string>('DB_SYNCHRONIZE') === 'true',
       }),
     }),
     UsersModule,

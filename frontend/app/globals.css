@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --color-primary: #ff5c00;
@@ -35,4 +35,3 @@ body {
 .btn-outline {
   @apply border-2 border-[#FF5C00] text-[#FF5C00] px-6 py-2 rounded-full font-semibold hover:bg-[#FF5C00] hover:text-white transition-all;
 }
-

@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+build
+dist
+.npm
+npm-debug.log
+.env
+.env.local
+.git
+.gitignore
+README.md
+docker-compose.yml
+# Keep Dockerfiles if needed, but usually they are small
+**/node_modules
+**/dist
+**/.next
