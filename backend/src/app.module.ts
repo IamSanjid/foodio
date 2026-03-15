@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from '@/entities/user.entity';
@@ -14,12 +16,17 @@ import { CategoriesModule } from '@/modules/categories/categories.module';
 import { MenuItemsModule } from '@/modules/menu-items/menu-items.module';
 import { OrdersModule } from '@/modules/orders/orders.module';
 import { SeederModule } from '@/modules/seeder/seeder.module';
+import { UPLOADS_DIR } from '@/common/constants';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: process.env.NODE_ENV === 'development' ? '.env' : undefined,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), UPLOADS_DIR),
+      serveRoot: '/uploads',
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

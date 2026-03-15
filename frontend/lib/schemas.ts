@@ -1,5 +1,14 @@
 import { z } from 'zod';
 
+const optionalAddressSchema = z.preprocess((value) => {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  const trimmed = value.trim();
+  return trimmed === '' ? undefined : trimmed;
+}, z.string().max(255).optional());
+
 export const loginSchema = z.object({
   email: z.email('Enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
@@ -8,6 +17,7 @@ export const loginSchema = z.object({
 export const registerSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(120),
   email: z.email('Enter a valid email address'),
+  address: optionalAddressSchema,
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 

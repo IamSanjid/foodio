@@ -52,28 +52,30 @@ export class SeederService implements OnModuleInit {
       const user = this.userRepository.create({
         email: 'user@foodio.com',
         password: userPassword,
-        name: 'Sanjid Haque',
+        name: 'John Doe',
         role: UserRole.USER,
+        address: 'House:23, Road:23, Jamaica, USA',
       });
 
       users.push(user);
 
       // Categories
       const categories = this.categoryRepository.create([
-        { name: 'Burgers', description: 'Delicious juicy burgers' },
-        { name: 'Pizza', description: 'Cheesy and crusty pizzas' },
-        { name: 'Drinks', description: 'Refreshing beverages' },
+        { name: 'Starters', description: 'Starter apetiters' },
+        { name: 'Main Courses', description: 'Main meal' },
+        { name: 'Dessert', description: 'Sweet savoring flavourful' },
       ]);
       const savedCategories = await this.categoryRepository.save(categories);
 
       // Menu Items
       const menuItems = this.menuItemRepository.create([
         {
-          name: 'Cheese Burger',
-          description: 'Classic cheese burger with beef patty',
+          name: 'French Fries',
+          description:
+            'Classic crispy french fries. Potato crackers one can enjoy any times.',
           price: 8.99,
           image:
-            'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500',
+            'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=700&q=80',
           isAvailable: true,
           category: savedCategories[0],
         },
@@ -87,20 +89,21 @@ export class SeederService implements OnModuleInit {
           category: savedCategories[0],
         },
         {
-          name: 'Margherita Pizza',
-          description: 'Simple and tasty with tomato and mozzarella',
+          name: 'Meat Balls',
+          description: 'Simple and tasty meat balls, properly seasoned',
           price: 12.99,
           image:
-            'https://images.unsplash.com/photo-1574071318508-1cdbad80ad38?w=500',
+            'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=700&q=80',
           isAvailable: true,
           category: savedCategories[1],
         },
         {
-          name: 'Pepperoni Pizza',
-          description: 'Spicy pepperoni with extra cheese',
+          name: 'Cheese Pasta',
+          description:
+            'Everything you can think of a cheese pasta, it has it. With special meat touch.',
           price: 14.99,
           image:
-            'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500',
+            'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=700&q=80',
           isAvailable: true,
           category: savedCategories[1],
         },

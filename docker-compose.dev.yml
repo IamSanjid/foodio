@@ -35,6 +35,7 @@ services:
       - .:/app
       - /app/node_modules
       - /app/backend/node_modules
+      - foodio-uploads-dev-data:/app/uploads
     depends_on:
       - db
 
@@ -59,3 +60,4 @@ services:
 
 volumes:
   foodio-db-dev-data:
+  foodio-uploads-dev-data:

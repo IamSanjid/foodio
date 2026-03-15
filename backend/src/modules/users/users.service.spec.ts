@@ -13,6 +13,7 @@ describe('UsersService', () => {
     email: 'test@example.com',
     password: 'hashedpassword',
     name: 'Test User',
+    address: 'Test address, 1-2-3-4 House',
   } as User;
 
   beforeEach(async () => {
@@ -57,7 +58,7 @@ describe('UsersService', () => {
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(repo.findOne).toHaveBeenCalledWith({
         where: { email: 'test@example.com' },
-        select: ['id', 'email', 'password', 'role', 'name'],
+        select: ['id', 'email', 'password', 'role', 'name', 'address'],
       });
     });
   });

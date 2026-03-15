@@ -27,6 +27,8 @@ RUN npm install --omit=dev
 
 COPY --from=builder /app/backend/dist ./backend/dist
 
+RUN mkdir -p /app/uploads
+
 EXPOSE ${PORT}
 
 CMD ["node", "-r", "tsconfig-paths/register", "backend/dist/main.js"]

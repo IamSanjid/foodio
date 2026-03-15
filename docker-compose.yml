@@ -34,6 +34,8 @@ services:
       PORT: 3000
     depends_on:
       - db
+    volumes:
+      - foodio-uploads-data:/app/uploads
 
   frontend:
     build:
@@ -51,3 +53,4 @@ services:
 
 volumes:
   foodio-db-data:
+  foodio-uploads-data:

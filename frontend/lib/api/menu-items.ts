@@ -13,6 +13,8 @@ export type MenuItemsQuery = {
   isAvailable?: boolean;
   limit?: number;
   offset?: number;
+  sortBy?: 'price' | 'name' | 'createdAt';
+  sortOrder?: 'ASC' | 'DESC';
 };
 
 export type MenuItemsResponse = {
@@ -29,6 +31,8 @@ export async function getMenuItems(query?: MenuItemsQuery) {
   }
   if (query?.limit) params.append('limit', String(query.limit));
   if (query?.offset) params.append('offset', String(query.offset));
+  if (query?.sortBy) params.append('sortBy', query.sortBy);
+  if (query?.sortOrder) params.append('sortOrder', query.sortOrder);
 
   const suffix = params.toString();
   const endpoint = suffix ? `/menu-items?${suffix}` : '/menu-items';
@@ -53,4 +57,21 @@ export async function updateMenuItem(id: number, payload: MenuItemUpdateInput) {
 
 export async function deleteMenuItem(id: number) {
   await api.delete(`/menu-items/${id}`);
+}
+
+export async function uploadMenuItemImage(file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const { data } = await api.post<{ url: string }>(
+    '/menu-items/upload',
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  );
+
+  return data;
 }

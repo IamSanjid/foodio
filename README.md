@@ -2,6 +2,19 @@
 
 A premium, simplified Restaurant Ordering System built with Next.js, NestJS, and PostgreSQL.
 
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="./sample_images/landing_page.png" width="100%"/></td>
+    <td><img src="./sample_images/food_menu_page.png" width="100%"/></td>
+  </tr>
+  <tr>
+    <td><img src="./sample_images/my_orders_page.png" width="100%"/></td>
+    <td><img src="./sample_images/admin_panel_page.png" width="100%"/></td>
+  </tr>
+</table>
+
 ## Features
 
 - **Public Site**: Browse categories and menu items, search, and filter.
@@ -80,7 +93,7 @@ If you prefer to run services manually:
 2. **Backend**:
    - `cd backend`
    - `npm run start:dev` / `npm run start:prod`
-     - _Note: The database will be seeded automatically on the first run if empty._
+     - _Note: The database will be seeded automatically on the first run if empty, the data that will be seeded depends on `SEED_INITIAL_DATA` environment variable value._
      - For development build `copy .env.example .env` (Windows) or `cp .env.example .env` (Linux/Mac)
      - _Note: For production build `.env` file will be ignored._
    ```env

@@ -7,6 +7,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/hooks/useToast';
 import {
   ChevronLeft,
   ShoppingCart,
@@ -24,6 +25,7 @@ export default function ItemDetails() {
   const [loading, setLoading] = useState(true);
   const { addItem } = useCart();
   const { user } = useAuth();
+  const { showToast } = useToast();
   const router = useRouter();
 
   useEffect(() => {
@@ -50,6 +52,12 @@ export default function ItemDetails() {
     }
     if (item) {
       addItem(item);
+      showToast(
+        <>
+          <strong>{item.name}</strong> added to cart
+        </>,
+        'success'
+      );
     }
   };
 

@@ -1,63 +1,34 @@
 'use client';
 
 import Link from 'next/link';
+import { Cormorant_Garamond } from 'next/font/google';
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['700'],
+});
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t py-12 px-6">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="col-span-1 md:col-span-2">
-          <Link href="/" className="text-3xl font-bold text-[#FF5C00]">
-            Foodio<span className="text-[#FFB800]">.</span>
+    <footer className="border-t border-[#E6E2D8] bg-white px-6 py-8 md:h-[93px] md:px-[110px] md:py-0 md:pt-[33px]">
+      <div className="mx-auto flex w-full max-w-[1220px] flex-col items-start gap-4 md:flex-row md:items-center md:justify-between md:gap-0">
+        <div className="flex items-center gap-2">
+          <Link
+            href="/"
+            className={`${cormorant.className} text-xl leading-7 font-bold text-[#1A3C34]`}
+          >
+            Foodio.
           </Link>
-          <p className="mt-4 text-gray-600 max-w-sm">
-            The quickest way to get your favorite meals delivered straight to
-            your door. Fresh ingredients, professional chefs, and fast delivery.
-          </p>
+          <span className="text-sm leading-5 font-normal text-[#7A7A7A]">
+            © 2026 Foodio Inc.
+          </span>
         </div>
-        <div>
-          <h4 className="font-bold text-lg mb-4">Quick Links</h4>
-          <ul className="space-y-2 text-gray-600">
-            <li>
-              <Link href="/" className="hover:text-[#FF5C00]">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href="/menu" className="hover:text-[#FF5C00]">
-                Menu
-              </Link>
-            </li>
-            <li>
-              <Link href="/orders" className="hover:text-[#FF5C00]">
-                Track Order
-              </Link>
-            </li>
-          </ul>
+
+        <div className="flex items-center gap-6 text-sm leading-5 font-normal tracking-[-0.150391px] text-[#7A7A7A]">
+          <Link href="#">Privacy</Link>
+          <Link href="#">Terms</Link>
+          <Link href="#">Contact</Link>
         </div>
-        <div>
-          <h4 className="font-bold text-lg mb-4">Support</h4>
-          <ul className="space-y-2 text-gray-600">
-            <li>
-              <Link href="/help" className="hover:text-[#FF5C00]">
-                Help Center
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="hover:text-[#FF5C00]">
-                Contact Us
-              </Link>
-            </li>
-            <li>
-              <Link href="/privacy" className="hover:text-[#FF5C00]">
-                Privacy Policy
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="max-w-7xl mx-auto mt-12 pt-8 border-t text-center text-gray-500 text-sm">
-        © {new Date().getFullYear()} Foodio. All rights reserved.
       </div>
     </footer>
   );

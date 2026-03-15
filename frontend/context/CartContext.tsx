@@ -24,17 +24,32 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window !== 'undefined') {
-      const storedCart = localStorage.getItem('cart');
-      return storedCart ? JSON.parse(storedCart) : [];
-    }
-    return [];
-  });
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [hasHydratedCart, setHasHydratedCart] = useState(false);
 
   useEffect(() => {
+    try {
+      const storedCart = localStorage.getItem('cart');
+      if (storedCart) {
+        const parsedCart = JSON.parse(storedCart) as CartItem[];
+        if (Array.isArray(parsedCart)) {
+          setItems(parsedCart);
+        }
+      }
+    } catch {
+      setItems([]);
+    } finally {
+      setHasHydratedCart(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydratedCart) {
+      return;
+    }
+
     localStorage.setItem('cart', JSON.stringify(items));
-  }, [items]);
+  }, [hasHydratedCart, items]);
 
   const addItem = (item: Omit<CartItem, 'quantity'>) => {
     setItems((prev) => {

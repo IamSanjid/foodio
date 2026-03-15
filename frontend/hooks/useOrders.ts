@@ -47,11 +47,17 @@ export function useOrders() {
   const placeOrder = async (
     items: { menuItemId: number; quantity: number }[]
   ) => {
+    setLoading(true);
+    setError(null);
+
     try {
       const data = await createOrder(items);
       return data;
     } catch (err: unknown) {
+      setError(getErrorMessage(err, 'Failed to place order'));
       throw new Error(getErrorMessage(err, 'Failed to place order'));
+    } finally {
+      setLoading(false);
     }
   };
 

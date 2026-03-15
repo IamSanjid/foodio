@@ -103,7 +103,7 @@ export class OrdersService {
   async findByUser(userId: number) {
     return this.orderRepository.find({
       where: { user: { id: userId } },
-      relations: ['items', 'items.menuItem'],
+      relations: ['user', 'items', 'items.menuItem'],
       order: { createdAt: 'DESC' },
     });
   }

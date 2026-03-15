@@ -22,7 +22,7 @@ export default function AdminLayout({
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="w-12 h-12 text-[#FF5C00] animate-spin" />
       </div>
     );
@@ -30,16 +30,18 @@ export default function AdminLayout({
 
   if (!user || user.role !== 'admin') {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="w-12 h-12 text-[#FF5C00] animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-gray-50 lg:h-screen lg:flex-row lg:overflow-hidden">
       <AdminSidebar />
-      <main className="grow p-10 overflow-auto">{children}</main>
+      <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        {children}
+      </main>
     </div>
   );
 }

@@ -23,6 +23,9 @@ export class User {
   @Column()
   name: string;
 
+  @Column({ nullable: true })
+  address?: string;
+
   @Column({
     type: 'enum',
     enum: UserRole,
