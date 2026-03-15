@@ -25,10 +25,10 @@ ENV NODE_ENV=production
 ENV PORT=3001
 ENV HOSTNAME="0.0.0.0"
 
-COPY --from=builder /app/frontend/public ./public
 COPY --from=builder /app/frontend/.next/standalone/frontend ./
 COPY --from=builder /app/frontend/.next/standalone/node_modules ./node_modules
-COPY --from=builder /app/frontend/.next/static ./frontend/.next/static
+COPY --from=builder /app/frontend/public ./public
+COPY --from=builder /app/frontend/.next/static ./.next/static
 
 EXPOSE ${PORT}
 

@@ -96,19 +96,25 @@ If you prefer to run services manually:
      - _Note: The database will be seeded automatically on the first run if empty, the data that will be seeded depends on `SEED_INITIAL_DATA` environment variable value._
      - For development build `copy .env.example .env` (Windows) or `cp .env.example .env` (Linux/Mac)
      - _Note: For production build `.env` file will be ignored._
-   ```env
-   DB_HOST=localhost # PostgreSQL database instance host
-   DB_PORT=5432 # PostgreSQL database instance port
-   DB_USERNAME=postgres # PostgreSQL database instance username
-   DB_PASSWORD=postgres # PostgreSQL database instance password
-   DB_NAME=foodio # The database name
-   DB_SYNCHRONIZE=true # Auto-sync schema (set to false in production!)
-   JWT_SECRET=supersecret # Used for JWT signing and verification
-   ADMIN_EMAIL=admin@foodio.com # Default admin email
-   ADMIN_PASSWORD=admin123 # Default admin password
-   SEED_INITIAL_DATA=true # Set this to false if you don't want to seed the database with some default user and food values
-   PORT=3000 # Backend port
-   ```
+     - _Note: Database migrations run automatically on startup. To generate a new migration after entity changes:_
+
+```bash
+   npm run migration:generate
+```
+
+```env
+DB_HOST=localhost # PostgreSQL database instance host
+DB_PORT=5432 # PostgreSQL database instance port
+DB_USERNAME=postgres # PostgreSQL database instance username
+DB_PASSWORD=postgres # PostgreSQL database instance password
+DB_NAME=foodio # The database name
+JWT_SECRET=supersecret # Used for JWT signing and verification
+ADMIN_EMAIL=admin@foodio.com # Default admin email
+ADMIN_PASSWORD=admin123 # Default admin password
+SEED_INITIAL_DATA=true # Set this to false if you don't want to seed the database with some default user and food values
+PORT=3000 # Backend port
+```
+
 3. **Frontend**:
    - `cd frontend`
    - For development build `copy .env.example .env` (Windows) or `cp .env.example .env` (Linux/Mac)

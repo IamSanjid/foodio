@@ -58,6 +58,28 @@ npm run test -w backend
   - `Pending -> Preparing -> Ready -> Completed`
 - RBAC is enforced via JWT guard + roles guard for admin-only operations.
 
+## Database Migrations
+
+Migrations run automatically on startup. To generate a new migration after changing entities:
+
+```bash
+npm run migration:generate
+```
+
+To run migrations manually:
+
+```bash
+npm run migration:run
+```
+
+To revert the last migration:
+
+```bash
+npm run migration:revert
+```
+
+_Note: Add `-w backend` after a CLI command if you're in monorepo root directory._
+
 ## Environment
 
 Use `.env` in `backend` (see root README for full example). Minimum required variables:

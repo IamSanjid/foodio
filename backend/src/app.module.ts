@@ -39,7 +39,11 @@ import { UPLOADS_DIR } from '@/common/constants';
         password: configService.get<string>('DB_PASSWORD', 'postgres'),
         database: configService.get<string>('DB_NAME', 'foodio'),
         entities: [User, Category, MenuItem, Order, OrderItem],
-        synchronize: configService.get<string>('DB_SYNCHRONIZE') === 'true',
+        migrations: [
+          join(process.cwd(), 'dist', 'migrations', '*.js'), // local
+          join(process.cwd(), 'backend', 'dist', 'migrations', '*.js'), // docker
+        ],
+        migrationsRun: true,
       }),
     }),
     UsersModule,
